@@ -1,0 +1,53 @@
+version: "3.9"
+services:
+  database:
+    image: mysql:8.0
+    container_name: database
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: license_system
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db_data:/var/lib/mysql
+
+  handshake-api:
+    build:
+      context: ./handshake-api
+    container_name: handshake-api
+    depends_on:
+      - database
+    ports:
+      - "5004:5004"
+
+  counter-api:
+    build:
+      context: ./counter-api
+    container_name: counter-api
+    depends_on:
+      - database
+    ports:
+      - "5002:5002"
+
+  hardwareinfo-api:
+    build:
+      context: ./hardwareinfo-api
+    container_name: hardwareinfo-api
+    ports:
+      - "5003:5003"
+
+  status-api:
+    build:
+      context: ./status-api
+    container_name: status-api
+    depends_on:
+      - handshake-api
+      - counter-api
+      - hardwareinfo-api
+    ports:
+      - "5000:5000"
+
+volumes:
+  db_data:
+
