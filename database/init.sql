@@ -1,0 +1,23 @@
+CREATE DATABASE IF NOT EXISTS license_system;
+
+USE license_system;
+
+CREATE TABLE IF NOT EXISTS license_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    license_key VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS token_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    token VARCHAR(255) NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS interaction_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    count INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+INSERT INTO interaction_table(count) VALUES(0);
+INSERT INTO license_table (license_key) VALUES ('VALID_LICENSE_KEY');
